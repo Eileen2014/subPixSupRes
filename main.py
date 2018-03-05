@@ -10,24 +10,26 @@ num_imgs = 7985
 # Training settings
 parser = argparse.ArgumentParser(description='Keras Super-Res Example')
 parser.add_argument('--upscale_factor', type=int, default=4, help="super resolution upscale factor")
-parser.add_argument('--batchSize', type=int, default=16 , help='training batch size')
-parser.add_argument('--testBatchSize', type=int, default=2, help='testing batch size')
-parser.add_argument('--nEpochs', type=int, default=16, help='number of epochs to train for')
+parser.add_argument('--batchSize', type=int, default=32, help='training batch size')
+parser.add_argument('--testBatchSize', type=int, default=3, help='testing batch size')
+parser.add_argument('--nEpochs', type=int, default=1, help='number of epochs to train for')
 parser.add_argument('--lr', type=float, default=0.001, help='Learning Rate. Default=0.01')
 parser.add_argument('--seed', type=int, default=123, help='random seed to use. Default=123')
+parser.add_argument('--data', type=str, default="/nobackup/imaging/FLGW_scans/subpixel/data/img_align_celeba",
+                    help='Path to image data')
 opt = parser.parse_args()
 
 print(opt)
 
 print('===> Building model')
-tm = model.build_ESPCN2(img_dims, opt.upscale_factor, lr=opt.lr)
+tm = model.build_ESPCN(img_dims, opt.upscale_factor, lr=opt.lr)
 tm.summary()
 
-data_path = "/nobackup/imaging/FLGW_scans/subpixel/data/img_align_celeba"
+data_path = opt.data
 tm.fit_generator(
     zip(data.get_input_set(img_dims, batch_size=opt.batchSize, seed=opt.seed, path=data_path),
         data.get_output_set(img_dims, opt.upscale_factor, batch_size=opt.batchSize, seed=opt.seed, path=data_path)),
-    steps_per_epoch=num_imgs,
+    steps_per_epoch=num_imgs/10,
     epochs=opt.nEpochs,
     # validation_data=validation_generator,
     # validation_steps=800,
@@ -46,7 +48,7 @@ for X_batch, Y_batch in zip(data.get_input_set(img_dims, batch_size=opt.testBatc
                             data.get_output_set(img_dims, opt.upscale_factor, batch_size=opt.batchSize, seed=444, path=data_path)):
     Yhat_batch = tm.predict(X_batch)
     # Show images
-    for i in range(0, opt.testBatchSize):
+    for i in range(3):
         plt.subplot(3, 4, 1 + i * 4)
         plt.imshow(np.clip(X_batch[i], 0., 1.))
         # plt.subplot(3, 4, 2 + i * 4)

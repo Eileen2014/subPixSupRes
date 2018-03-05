@@ -133,7 +133,8 @@ def PS(X, r, shape, color=True):
         X = _phase_shift(X, r, shape)
     return X
 
-
+# TODO
+'''
 def build_ESPCN2(img_dims, upscale_factor, lr=0.001):
     inputs = Input(shape=img_dims + (3,))
     c1 = Conv2DTranspose(64, kernel_size=1, activation='linear', padding='same', name="c1")(inputs)
@@ -151,7 +152,7 @@ def build_ESPCN2(img_dims, upscale_factor, lr=0.001):
     m = Model(input=inputs, output=t)
     m.compile(Adam(lr=lr), 'mse')
     return m
-
+'''
 
 '''
 class Net(nn.Module):
