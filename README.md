@@ -21,13 +21,5 @@ optional arguments:
   --seed SEED           random seed to use. Default=123
   --data DATA           Path to image data
 ```
-This example trains a super-resolution network on the [BSD300 dataset](https://www2.eecs.berkeley.edu/Research/Projects/CS/vision/bsds/), using crops from the 200 training images, and evaluating on crops of the 100 test images. A snapshot of the model after every epoch with filename model_epoch_<epoch_number>.pth
-
 ## Example Usage:
-
-### Train
-
-`python main.py --upscale_factor 3 --batchSize 4 --testBatchSize 100 --nEpochs 30 --lr 0.001`
-
-### Super Resolve
-`python super_resolve.py --input_image dataset/BSDS300/images/test/16077.jpg --model model_epoch_500.pth --output_filename out.png`
+`python3 main.py --upscale_factor 4 --batchSize 4 --testBatchSize 3 --nEpochs 30 --lr 0.001 --data <path_to_images>`
